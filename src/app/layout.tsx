@@ -18,7 +18,20 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "TN26 · Tamil Nadu Elections 2026",
   description: "Live results dashboard for the 2026 Tamil Nadu Legislative Assembly elections.",
-  metadataBase: new URL("https://tn26.local"),
+  metadataBase: new URL("https://tn26.derajyojith.dev"),
+  openGraph: {
+    title: "TN26 · Tamil Nadu Elections 2026",
+    description: "Live results dashboard for the 2026 Tamil Nadu Legislative Assembly elections.",
+    url: "https://tn26.derajyojith.dev",
+    siteName: "TN26",
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TN26 · Tamil Nadu Elections 2026",
+    description: "Live results dashboard for the 2026 Tamil Nadu Legislative Assembly elections.",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
