@@ -7,9 +7,10 @@ import { AllianceStream } from "@/components/charts/AllianceStream";
 import { KpiStack } from "@/components/modules/KpiStack";
 import { AllianceLeaderboard } from "@/components/modules/AllianceLeaderboard";
 import { InsightStrip } from "@/components/modules/InsightStrip";
+import { api } from "@/lib/path";
 
 export default function Home() {
-  const { data, isLoading } = useSWR<LiveResults>("/api/results");
+  const { data, isLoading } = useSWR<LiveResults>(api("/api/results"));
 
   if (!data || isLoading) {
     return (

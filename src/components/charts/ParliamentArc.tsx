@@ -37,7 +37,7 @@ function dotPositions() {
 
   const positions: Array<{ x: number; y: number }> = [];
   for (let r = 0; r < ROWS; r++) {
-    const t = ROWS === 1 ? 0 : r / (ROWS - 1);
+    const t = r / (ROWS - 1);
     const radius = OUTER_RADIUS - t * (OUTER_RADIUS - INNER_RADIUS);
     const count = rowCounts[r];
     for (let i = 0; i < count; i++) {

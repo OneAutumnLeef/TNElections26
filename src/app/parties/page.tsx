@@ -6,9 +6,10 @@ import { PARTIES, partyColor } from "@/data/parties";
 import { ALLIANCE_BY_ID } from "@/data/alliances";
 import { FlowNum } from "@/components/data-display/NumberFlow";
 import { AllianceTag } from "@/components/data-display/AllianceTag";
+import { api } from "@/lib/path";
 
 export default function PartiesPage() {
-  const { data } = useSWR<LiveResults>("/api/results");
+  const { data } = useSWR<LiveResults>(api("/api/results"));
 
   if (!data) return <div className="mx-auto max-w-7xl p-6 text-sm text-(--text-subtle)">Loading…</div>;
 

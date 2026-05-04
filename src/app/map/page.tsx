@@ -9,11 +9,12 @@ import { partyColor } from "@/data/parties";
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
+import { api } from "@/lib/path";
 
 type Mode = "winner" | "margin" | "swing";
 
 export default function MapPage() {
-  const { data } = useSWR<LiveResults>("/api/results");
+  const { data } = useSWR<LiveResults>(api("/api/results"));
   const [hoverAc, setHoverAc] = useState<number | null>(null);
   const [mode, setMode] = useState<Mode>("winner");
 

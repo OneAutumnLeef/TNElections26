@@ -9,9 +9,10 @@ import { ALLIANCE_BY_ID } from "@/data/alliances";
 import Link from "next/link";
 import { useMemo } from "react";
 import { TrendingUp, AlertCircle, Crown, Sparkles, MapPin, Trophy, Flame, Award } from "lucide-react";
+import { api } from "@/lib/path";
 
 export default function InsightsPage() {
-  const { data } = useSWR<LiveResults>("/api/results");
+  const { data } = useSWR<LiveResults>(api("/api/results"));
 
   const insights = useMemo(() => {
     if (!data) return null;

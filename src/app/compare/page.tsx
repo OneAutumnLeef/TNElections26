@@ -4,9 +4,10 @@ import { useState } from "react";
 import useSWR from "swr";
 import type { LiveResults } from "@/data/types";
 import { ALLIANCES, ALLIANCE_BY_ID } from "@/data/alliances";
+import { api } from "@/lib/path";
 
 export default function ComparePage() {
-  const { data } = useSWR<LiveResults>("/api/results");
+  const { data } = useSWR<LiveResults>(api("/api/results"));
   const [a, setA] = useState("spa");
   const [b, setB] = useState("nda");
 

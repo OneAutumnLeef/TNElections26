@@ -4,6 +4,7 @@ import useSWR from "swr";
 import type { LiveResults } from "@/data/types";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/cn";
+import { api } from "@/lib/path";
 
 function formatRelative(iso: string): string {
   const ms = Date.now() - new Date(iso).getTime();
@@ -17,7 +18,7 @@ function formatRelative(iso: string): string {
 }
 
 export function StatusStrip() {
-  const { data, error } = useSWR<LiveResults>("/api/results");
+  const { data, error } = useSWR<LiveResults>(api("/api/results"));
   const [tick, setTick] = useState(0);
 
   useEffect(() => {

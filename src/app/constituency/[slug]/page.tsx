@@ -10,6 +10,7 @@ import { partyToAlliance } from "@/data/aggregate";
 import { ALLIANCE_BY_ID } from "@/data/alliances";
 import { AllianceTag } from "@/components/data-display/AllianceTag";
 import { ChevronLeft, ChevronRight, Trophy, Activity, Users } from "lucide-react";
+import { api } from "@/lib/path";
 
 type EciCandidate = { name: string; party: string; status: "won" | "leading" | "trailing" | "counting"; votes: number; margin: number };
 type AcLive = {
@@ -29,7 +30,7 @@ export default function ConstituencyPage({ params }: { params: Promise<{ slug: s
   const c = CONSTITUENCY_BY_SLUG[slug];
   if (!c) notFound();
 
-  const { data: live } = useSWR<AcLive>(`/api/constituency/${c.id}`, { refreshInterval: 60_000 });
+  const { data: live } = useSWR<AcLive>(api(`/api/constituency/${c.id}`), { refreshInterval: 60_000 });
   const result = live;
   const candidates = live?.candidates ?? [];
   const totalVotes = live?.totalVotes ?? 0;
