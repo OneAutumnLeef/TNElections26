@@ -2,9 +2,10 @@
 // schema once counting starts and counts populate. Use to fix the parser in
 // /api/results when the column order is confirmed.
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 export const preferredRegion = ["bom1"];
 export const dynamic = "force-dynamic";
+export const maxDuration = 15;
 
 const ECI_URL = "https://results.eci.gov.in/ResultAcGenMay2026/election-json-S22-live.json";
 

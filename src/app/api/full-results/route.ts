@@ -18,9 +18,10 @@ import { PARTIES } from "@/data/parties";
 import { partyToAlliance } from "@/data/aggregate";
 import type { LiveResults } from "@/data/types";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 export const preferredRegion = ["bom1"];
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 const ECI_BASE = "https://results.eci.gov.in/ResultAcGenMay2026";
 const BATCH_SIZE = 24;

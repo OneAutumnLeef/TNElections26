@@ -8,9 +8,10 @@ import { NextResponse } from "next/server";
 import { parseEciCandidatesPage } from "@/lib/eci-html-parser";
 import { normalizePartyName } from "@/data/party_lookup";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 export const preferredRegion = ["bom1"];
 export const dynamic = "force-dynamic";
+export const maxDuration = 15;
 
 const ECI_BASE = "https://results.eci.gov.in/ResultAcGenMay2026";
 

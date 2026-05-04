@@ -7,9 +7,13 @@ import { ALLIANCES } from "@/data/alliances";
 import { PARTIES } from "@/data/parties";
 import { fetchAllAcs, buildLiveResults } from "@/lib/eci-fanout";
 
-export const runtime = "edge";
+// Node.js runtime (not edge): Vercel edge egress IPs are blocked by ECI's
+// Akamai WAF, so we need real AWS Lambda in ap-south-1 / bom1.
+// maxDuration covers the cold fanout to all 234 candidateswise pages.
+export const runtime = "nodejs";
 export const preferredRegion = ["bom1"];
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 const ECI_URL = "https://results.eci.gov.in/ResultAcGenMay2026/election-json-S22-live.json";
 
