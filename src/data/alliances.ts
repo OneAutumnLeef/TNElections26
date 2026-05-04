@@ -1,0 +1,78 @@
+import type { Alliance } from "./types";
+
+export const ALLIANCES: Alliance[] = [
+  {
+    id: "spa",
+    name: "SPA / DMK+",
+    short: "SPA",
+    color: "#E53935",
+    seatsContested: 234,
+    candidates: 234,
+    womenCandidates: 24,
+    projectedSeats: 148,
+  },
+  {
+    id: "nda",
+    name: "NDA / ADMK+",
+    short: "NDA",
+    color: "#43A047",
+    seatsContested: 234,
+    candidates: 234,
+    womenCandidates: 27,
+    projectedSeats: 66,
+  },
+  {
+    id: "tvk",
+    name: "TVK",
+    short: "TVK",
+    color: "#A67C00",
+    seatsContested: 234,
+    candidates: 234,
+    womenCandidates: 28,
+    projectedSeats: 8,
+  },
+  {
+    id: "ntk",
+    name: "NTK",
+    short: "NTK",
+    color: "#B31818",
+    seatsContested: 234,
+    candidates: 234,
+    womenCandidates: 111,
+    projectedSeats: 0,
+  },
+  {
+    id: "ajpk",
+    name: "AJPK / AIPTMMK",
+    short: "AJPK",
+    color: "#D4AC0D",
+    seatsContested: 234,
+    candidates: 234,
+    womenCandidates: 0,
+    projectedSeats: 0,
+  },
+  {
+    id: "others",
+    name: "Other Parties",
+    short: "OTH",
+    color: "#607D8B",
+    seatsContested: 100,
+    candidates: 500,
+    womenCandidates: 50,
+    projectedSeats: 0,
+  },
+  {
+    id: "independent",
+    name: "Independents",
+    short: "IND",
+    color: "#757575",
+    seatsContested: 500,
+    candidates: 1558,
+    womenCandidates: 182,
+    projectedSeats: 12,
+  },
+];
+
+export const ALLIANCE_BY_ID: Record<string, Alliance> = Object.fromEntries(
+  ALLIANCES.map((a) => [a.id, a]),
+);

@@ -1,26 +1,116 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* Brand */
+  --color-brand: #5b9eff;
+  --color-brand-soft: rgba(91, 158, 255, 0.12);
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  /* Alliance / party */
+  --color-spa: #e53935;
+  --color-nda: #43a047;
+  --color-tvk: #a67c00;
+  --color-ntk: #b31818;
+  --color-ajpk: #d4ac0d;
+  --color-others: #607d8b;
+  --color-independent: #757575;
+
+  /* Status */
+  --color-live: #ff3b30;
+  --color-counting: #ffaa00;
+  --color-leading: #5b9eff;
+  --color-won: #00d672;
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Dark-first base palette (default) */
+:root {
+  color-scheme: dark;
+  --bg: #0a0c10;
+  --bg-elevated: #11141a;
+  --bg-overlay: #161a22;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --text: #f3f5f8;
+  --text-muted: #9aa3b2;
+  --text-subtle: #5d6573;
+  --grid: rgba(255, 255, 255, 0.04);
+  --tabular: "tnum" 1, "lnum" 1, "ss01" 1;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #fafbfc;
+  --bg-elevated: #ffffff;
+  --bg-overlay: #ffffff;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.16);
+  --text: #0a0c10;
+  --text-muted: #525a69;
+  --text-subtle: #7a8392;
+  --grid: rgba(0, 0, 0, 0.04);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-bg-overlay: var(--bg-overlay);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-text-subtle: var(--text-subtle);
+  --color-grid: var(--grid);
+}
+
+* { border-color: var(--border); }
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-feature-settings: "cv01", "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.tabular { font-variant-numeric: tabular-nums lining-nums; }
+.mono { font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+/* Subtle grid overlay used by hero / cards */
+.bg-dotgrid {
+  background-image: radial-gradient(circle at 1px 1px, var(--grid) 1px, transparent 0);
+  background-size: 20px 20px;
+}
+
+/* Live-pulse for the LIVE indicator */
+@keyframes pulse-live {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.55); }
+  50% { box-shadow: 0 0 0 6px rgba(255, 59, 48, 0); }
+}
+.pulse-live { animation: pulse-live 1.6s ease-in-out infinite; }
+
+/* Smooth view transitions where supported */
+@view-transition { navigation: auto; }
+
+/* Scrollbars */
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 999px; }
+*::-webkit-scrollbar-thumb:hover { background: var(--text-subtle); }
+
+/* Numeric "rolling" in NumberFlow component remains crisp */
+[data-numeric] { font-variant-numeric: tabular-nums; }
+
+/* Utility — hairline borders on cards */
+.card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.card-overlay {
+  background: var(--bg-overlay);
+  border: 1px solid var(--border);
+  border-radius: 14px;
 }
