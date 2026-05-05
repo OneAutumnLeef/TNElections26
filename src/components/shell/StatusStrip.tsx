@@ -27,8 +27,6 @@ export function StatusStrip() {
   }, []);
 
   const updated = data?.updatedAt;
-  // "Decided" — count both won and leading-with-real-votes; pure leading-from-summary
-  // (votes=0) doesn't count as a decided race. Falls back to leader presence + nonzero margin.
   const decided = data
     ? data.constituencies.filter(
         (c) => c.status === "won" || (c.leader && c.totalVotes > 0),
@@ -36,13 +34,11 @@ export function StatusStrip() {
     : 0;
   const total = data?.totalSeats ?? 234;
   const pct = total > 0 ? Math.round((decided / total) * 100) : 0;
-  // LIVE only when counting has actually started AND we have data AND no error.
-  // Before 8 AM IST on counting day, the JSON exists but doesn't reflect counting state.
-  const countingStarted = data?.countingStartedAt
-    ? new Date(data.countingStartedAt).getTime() <= Date.now()
-    : false;
-  const live = !!data && !error && countingStarted;
-  const preCounting = !!data && !error && !countingStarted;
+  // Counting wrapped 2026-05-04. The strip shows FINAL state.
+  const wonCount = data ? data.constituencies.filter((c) => c.status === "won").length : 0;
+  const isFinal = !!data && wonCount === total;
+  const live = !isFinal && !!data && !error;
+  const preCounting = false;
 
   return (
     <div className="border-b border-(--border) bg-(--bg-elevated)/60 backdrop-blur">
@@ -51,15 +47,15 @@ export function StatusStrip() {
           <span
             className={cn(
               "inline-block h-1.5 w-1.5 rounded-full",
-              live
+              isFinal
+                ? "bg-(--color-won)"
+                : live
                 ? "bg-(--color-live) pulse-live"
-                : preCounting
-                ? "bg-(--color-counting)"
                 : "bg-(--text-subtle)",
             )}
           />
           <span className="mono font-medium tracking-wider text-(--text)">
-            {live ? "LIVE" : preCounting ? "PRE-COUNT" : "OFFLINE"}
+            {isFinal ? "FINAL" : live ? "LIVE" : "OFFLINE"}
           </span>
         </div>
 
