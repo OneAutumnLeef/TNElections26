@@ -4,6 +4,7 @@ import "./globals.css";
 import { Nav } from "@/components/shell/Nav";
 import { StatusStrip } from "@/components/shell/StatusStrip";
 import { Providers } from "@/components/shell/Providers";
+import { VisitTrackerMount } from "@/components/shell/VisitTrackerMount";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="min-h-dvh" suppressHydrationWarning>
         <Providers>
+          <VisitTrackerMount />
           <div className="flex min-h-dvh flex-col">
             <Nav />
             <StatusStrip />
