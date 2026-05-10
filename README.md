@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TN26 — Tamil Nadu 2026 Legislative Assembly Results
 
-## Getting Started
+A live results dashboard for the 2026 Tamil Nadu Legislative Assembly elections. 234 constituencies, alliance-level rollups, per-AC drilldowns, and a parliament arc that reflects the running ECI tally.
 
-First, run the development server:
+Counting concluded on 2026-05-04. The app now serves a baked-in static snapshot of the final tally taken from the ECI fanout at the close of counting.
+
+## Data source
+
+All numbers come from the **Election Commission of India** — the per-AC candidate result pages under `results.eci.gov.in` (state code `S22`, election `ResultAcGenMay2026`). No third-party aggregators, no internal databases, no API keys: every figure on the dashboard is parsed from the ECI HTML pages.
+
+The footer credits ECI / CEO Tamil Nadu and marks the dashboard as informational only. Treat this as a viewer over the official tally, not as a source of truth — for the canonical record refer to the ECI portal directly.
+
+## Tech stack
+
+- Next.js 16 (App Router) on React 19
+- TypeScript, Tailwind 4
+- SWR for client-side fetching, Zustand for view state
+- Recharts for charts, Motion for transitions, Fuse.js for constituency search, Zod for response validation
+
+No environment variables are required to run the app. There are no API keys anywhere in the codebase — the ECI HTML pages are public.
+
+## Local development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`. The dev server serves from `/`; production deploys mount under a `BASE_PATH` (see `next.config.ts`).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build   # production build
+npm run start   # serve the built app
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project layout
 
-## Learn More
+```
+src/
+  app/                     # App Router routes
+    page.tsx               # Home: hero arc + KPI stack + 234-cell stream
+    constituency/          # Per-AC drilldown
+    parties/ candidates/   # Reference views
+    compare/ insights/ map/
+    api/
+      results/             # Final-tally JSON (static snapshot)
+      results/raw/         # Pass-through to ECI summary JSON
+      full-results/        # Alias of /api/results
+      constituency/[acNo]/ # Single-AC detail
+  components/
+    charts/                # ParliamentArc, AllianceStream, etc.
+    modules/               # KpiStack, AllianceLeaderboard, InsightStrip
+    data-display/ shell/
+  data/
+    final-results.json     # Frozen ECI tally (served by /api/results)
+    constituencies.ts parties.ts alliances.ts aggregate.ts
+    party_lookup.ts synthetic.ts types.ts
+  lib/
+    eci-fanout.ts          # 234-fetch fanout against the ECI portal
+    eci-html-parser.ts     # HTML → typed candidate records
+    path.ts cn.ts
+```
 
-To learn more about Next.js, take a look at the following resources:
+## API routes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Route | Purpose |
+| --- | --- |
+| `GET /api/results` | Final aggregated tally (static, served from `final-results.json`). |
+| `GET /api/full-results` | Alias of `/api/results`. |
+| `GET /api/results/raw` | Lightweight pass-through to the ECI summary JSON for debugging. |
+| `GET /api/constituency/[acNo]` | Per-constituency candidate detail. |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+All routes run on the Node.js runtime and are pinned to `bom1` so that ECI's geo-fenced WAF accepts the request when fanout is active.
 
-## Deploy on Vercel
+## Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+See [`DEPLOYMENT.md`](./DEPLOYMENT.md). The short version: push to a Git remote, deploy as a Next.js project, keep the region pinned to `bom1`, and point a CNAME at the deployment.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Why a static snapshot now?
+
+While counting was live, `/api/results` ran the full 234-page ECI fanout on every cache miss. Once the ECI pages froze, that traffic stopped being useful — and ECI's WAF blocks most cloud egress, so re-fetching from a hosting provider just produced 403s. The frozen tally was captured locally (the only network path the WAF accepts) and committed as `src/data/final-results.json`. The fanout code is still in the tree for reference and would work again if the same shape of election were re-run.
+
+## Author
+
+Built by Deraj Yojith. Issues and pull requests on GitHub are welcome.
